@@ -1,21 +1,33 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 #from classes import User, Music
 
 app = Flask(__name__)
 
 client = app.test_client()
 
-test = [
+users_list = [
     {
-        'name':'Kirill'
+        'name':'Kirill',
+        'surname': 'Kudryavcev',
+        'age':19
     },
     {
-        'music':'slipnot'
+        'name':'Bob',
+        'surname': 'Brown',
+        'age':33
     }
 ]
-@app.route('/api/test', methods=['GET'])
+
+@app.route('/api/get', methods=['GET'])
 def GetQuery():
-    return test
+    return jsonify(users_list)
+
+@app.route('/api/post', methods=['POST'])
+def PostQuery():
+    new_one = request.json
+    users_list.append(new_one)
+    return jsonify(users_list)
+
 
 if __name__ == '__main__':
     app.run()
