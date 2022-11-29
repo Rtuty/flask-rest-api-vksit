@@ -1,18 +1,21 @@
-from flask import Flask, request
-from classes import *
+from flask import Flask
+#from classes import User, Music
 
 app = Flask(__name__)
 
-# Получить список пользователей
-@app.route('api/users')
-def GetUsers():
-    result = ''
-    users = []
-    for us in users:
-        user = us.name + ", " + us.age + ", " + us.gender + ", " +us.job + ", " +us.hobby
-        result = result + user
-    return result, 200
+client = app.test_client()
 
+test = [
+    {
+        'name':'Kirill'
+    },
+    {
+        'music':'slipnot'
+    }
+]
+@app.route('/api/test', methods=['GET'])
+def GetQuery():
+    return test
 
 if __name__ == '__main__':
     app.run()
