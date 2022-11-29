@@ -22,13 +22,13 @@ users_list = [
 
 @app.route('/api/get', methods=['GET'])
 def GetQuery():
-    return jsonify(users_list)
+    return 'Список всех пользователей: ', jsonify(users_list)
 
 @app.route('/api/post', methods=['POST'])
 def PostQuery():
     new_one = request.json
     users_list.append(new_one)
-    return jsonify(users_list)
+    return 'Новый пользователь добавлен: ', jsonify(users_list)
 
 
 @app.route('users/put/<int:users_list_id>', methods=['PUT'])
@@ -41,6 +41,15 @@ def PutQuery(users_list_id):
     item.update(params)
 
     return jsonify(item)
+
+@app.route('users/delete/<int:users_list_id>', methods=['DELETE'])
+def DeleteQuery(users_list_id):
+    idx, _ = next(
+        (x for x in enumerate(users_list) 
+        if x[1]['id'] == users_list_id), (None, None)
+        )
+    users_list.pop(idx)
+    return 'Пользователь с ID: ', jsonify(idx), 'удален', 204
 
 
 if __name__ == '__main__':
