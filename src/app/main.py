@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_swagger_ui import get_swaggerui_blueprint
 #from classes import User, Music
 
 app = Flask(__name__)
@@ -10,13 +11,26 @@ users_list = [
         'id': 1,
         'name':'Kirill',
         'surname': 'Kudryavcev',
-        'age':19
+        'age':19,
     },
     {   
         'id': 2,
         'name':'Bob',
         'surname': 'Brown',
-        'age':33
+        'age':33,
+    }
+]
+
+music_list = [
+    {
+        'name': 'smells like teen spirit',
+        'author': 'nirvana',
+        'raiting': 80,
+    },
+    {
+        'name': 'walk',
+        'author': 'panter',
+        'raiting': 100,
     }
 ]
 
