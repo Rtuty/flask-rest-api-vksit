@@ -45,25 +45,24 @@ def PostQuery(users_list):
     return jsonify(users_list)
 
 
-# @app.route('api/put/<int:users_list_id>', methods=['PUT'])
-# def PutQuery():
-#     item = next((x for x in users_list if x['id'] == users_list_id), None)
-#     params = request.json
+@app.route('/tutorials/<int:user_list_id>', methods=['PUT'])
+def update_tutorial(user_list_id):
+    item = next((x for x in users_list if x['id'] == user_list_id), None)
+    params = request.json
+    if not item:
+        return {'message': 'No users with this id'}, 400
+    item.update(params)
+    return item
 
-#     if not item:
-#         return {'message': 'Ошибка! Объект с указаным идентификатором не найден'}, 400
-#     item.update(params)
 
-#     return jsonify(item)
+@app.route('/tutorials/<int:user_list_id>', methods=['DELETE'])
+def delete_tutorial(user_list_id):
+    idx, _ = next((x for x in enumerate(users_list)
+                   if x[1]['id'] == user_list_id), (None, None))
 
-# @app.route('api/delete/<int:users_list_id>', methods=['DELETE'])
-# def DeleteQuery(users_list_id):
-#     idx, _ = next(
-#         (x for x in enumerate(users_list) 
-#         if x[1]['id'] == users_list_id), (None, None)
-#         )
-#     users_list.pop(idx)
-#     return 'Пользователь с ID: ', jsonify(idx), 'удален', 204
+    users_list.pop(idx)
+    return '', 204
+
 
 
 if __name__ == '__main__':
