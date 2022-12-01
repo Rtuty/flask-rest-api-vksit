@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_swagger_ui import get_swaggerui_blueprint
+#from flask_swagger_ui import get_swaggerui_blueprint
 #from classes import User, Music
 
 app = Flask(__name__)
@@ -36,34 +36,34 @@ music_list = [
 
 @app.route('/api/get', methods=['GET'])
 def GetQuery():
-    return 'Список всех пользователей: ', jsonify(users_list)
+    return jsonify(users_list)
 
 @app.route('/api/post', methods=['POST'])
-def PostQuery():
+def PostQuery(users_list):
     new_one = request.json
     users_list.append(new_one)
-    return 'Новый пользователь добавлен: ', jsonify(users_list)
+    return jsonify(users_list)
 
 
-@app.route('users/put/<int:users_list_id>', methods=['PUT'])
-def PutQuery(users_list_id):
-    item = next((x for x in users_list if x['id'] == users_list_id), None)
-    params = request.json
+# @app.route('api/put/<int:users_list_id>', methods=['PUT'])
+# def PutQuery():
+#     item = next((x for x in users_list if x['id'] == users_list_id), None)
+#     params = request.json
 
-    if not item:
-        return {'message': 'Ошибка! Объект с указаным идентификатором не найден'}, 400
-    item.update(params)
+#     if not item:
+#         return {'message': 'Ошибка! Объект с указаным идентификатором не найден'}, 400
+#     item.update(params)
 
-    return jsonify(item)
+#     return jsonify(item)
 
-@app.route('users/delete/<int:users_list_id>', methods=['DELETE'])
-def DeleteQuery(users_list_id):
-    idx, _ = next(
-        (x for x in enumerate(users_list) 
-        if x[1]['id'] == users_list_id), (None, None)
-        )
-    users_list.pop(idx)
-    return 'Пользователь с ID: ', jsonify(idx), 'удален', 204
+# @app.route('api/delete/<int:users_list_id>', methods=['DELETE'])
+# def DeleteQuery(users_list_id):
+#     idx, _ = next(
+#         (x for x in enumerate(users_list) 
+#         if x[1]['id'] == users_list_id), (None, None)
+#         )
+#     users_list.pop(idx)
+#     return 'Пользователь с ID: ', jsonify(idx), 'удален', 204
 
 
 if __name__ == '__main__':
