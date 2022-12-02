@@ -21,7 +21,7 @@ users_list = [
     }
 ]
 
-music_list = [
+musics_list = [
     {
         'name': 'smells like teen spirit',
         'author': 'nirvana',
@@ -34,18 +34,28 @@ music_list = [
     }
 ]
 
-@app.route('/api/get', methods=['GET'])
-def GetQuery():
-    return jsonify(users_list)
+@app.route('/api/get/<string:name>', methods=['GET'])
+def GetQuery(name):
+    if name == 'users':
+        return jsonify(users_list), 200
+    if name == 'musics':
+        return jsonify(musics_list), 200
+    
 
-@app.route('/api/post', methods=['POST'])
-def PostQuery(users_list):
+@app.route('/api/post/<string:name>', methods=['POST'])
+def PostQuery(name):
     new_one = request.json
-    users_list.append(new_one)
-    return jsonify(users_list)
+    if name == 'users':
+        users_list.append(new_one)
+        return jsonify(users_list)
+    if name == 'musics':
+        musics_list.append(new_one)
+        return jsonify(musics_list)
+
+    
 
 
-@app.route('/tutorials/<int:user_list_id>', methods=['PUT'])
+@app.route('/api/put/<int:user_list_id>', methods=['PUT'])
 def update_tutorial(user_list_id):
     item = next((x for x in users_list if x['id'] == user_list_id), None)
     params = request.json
@@ -55,13 +65,14 @@ def update_tutorial(user_list_id):
     return item
 
 
-@app.route('/tutorials/<int:user_list_id>', methods=['DELETE'])
+@app.route('/api/delete/<int:user_list_id>', methods=['DELETE'])
 def delete_tutorial(user_list_id):
     idx, _ = next((x for x in enumerate(users_list)
                    if x[1]['id'] == user_list_id), (None, None))
 
     users_list.pop(idx)
     return '', 204
+
 
 
 
