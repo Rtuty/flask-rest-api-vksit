@@ -36,7 +36,7 @@ def PostMethodHandler(name):
             surname = req['surname']
             age = req['age']
         else:
-            return 'Ошибка! Недостаточно данных для заполнения объекта пользователь', 500
+            return 'Ошибка! Недостаточно данных для заполнения объекта пользователь', 404
 
         user = User(id, name, surname, age)
         users.append(user)
@@ -65,13 +65,49 @@ def update_tutorial(user_list_id):
     item = next((x for x in users if x['id'] == user_list_id), None)
     params = request.json
     if not item:
-        return {'message': 'No users with this id'}, 400
+        return {'message': 'Пользователя с данным ID не существует'}, 400
     item.update(params)
     return item
 
 
+@app.route('/api/put/<string:name_list>/<int:put_id>', methods=['PUT'])
+def PutMethodHandler(name_list, put_id):
+    req = request.get_json()
+    if name_list == None:
+        return 'Ошибка! Укажите тип объекта для обновления'
+    if put_id == None:
+        return 'Ошибка! Укажите ID объекта для обновления'
+    
+    if name_list == 'user':
+        
+        list = users[put_id]
+
+        if 'id' in req:
+            list.id = req['id']
+        if 'name' in req:
+            list.name = req['name']
+        if 'surname' in req:
+            list.surname = req['surname']
+        if 'age' in req:
+            list.age = req['age']
+    
+    if name_list == 'music':
+
+        list = musics[put_id]
+
+        if 'name' in req:
+            list.name = req['name']
+        if 'author' in req:
+            list.author = req['author']
+        if 'raiting' in req:
+            list.raiting = req['raiting']
+
+    return 'Данные успешно изменены', 200
+
+
+
 @app.route('/api/delete/<int:user_list_id>', methods=['DELETE'])
-def delete_tutorial(user_list_id):
+def DeleteMethodHandler(user_list_id):
     idx, _ = next((x for x in enumerate(users)
                    if x[1]['id'] == user_list_id), (None, None))
 
