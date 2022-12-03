@@ -1,89 +1,61 @@
 from flask import Flask, jsonify, request
-from lib.classes import User
+from lib.classes import User, Music
 
 
 app = Flask(__name__)
 
 client = app.test_client()
 
-users = [
-    {   
-        'id': 1,
-        'name':'Kirill',
-        'surname': 'Kudryavcev',
-        'age':19,
-    },
-    {   
-        'id': 2,
-        'name':'Bob',
-        'surname': 'Brown',
-        'age':33,
-    }
-]
 
-musics = [
-    {
-        'name': 'smells like teen spirit',
-        'author': 'nirvana',
-        'raiting': 80,
-    },
-    {
-        'name': 'walk',
-        'author': 'panter',
-        'raiting': 100,
-    }
-]
+users = []
+musics = []
 
 @app.route('/api/get/<string:name>', methods=['GET'])
-def GetQuery(name):
+def GetQueryHandler(name):
     if name == 'users':
-        return jsonify(users), 200
+        for us in users:
+            user = us.id + ", " + us.name + ", " +us.surname + ", " + us.age
+        return user, 200
     if name == 'musics':
-        return jsonify(musics), 200
-
-#todo
-# @app.route('/api/get/id/<string:name>/<int:id>', methods=['GET'])
-# def GetQuery(name, id):
-#     if name == 'users':
-#         return jsonify(users[id]), 200
-#     if name == 'musics':
-#         return jsonify(users[id]), 200
+        for ms in musics:
+            music = ms.name + ", " + ms.author + ", " + ms.raiting
+        return music, 200
+    if name == None:
+        return 'Ошбика! Укажите в URL имя объекта, который собираетесь получить', 404
+    else:
+        return 'Ошибка! Указан неверный путь в URL'
 
 
-@app.route('/api/createuser', methods=['POST'])
-def PostQuery():
-    if request.method == 'POST':
-        req = request.get_json()
-
-        id = None
-        name = None
-        surname = None
-        age = None
-    
-        if req:
-            if 'id' in req:
-                id = req['id']
-            else:
-                return 'Ошибка! id пользователя отсутствует', 400
-            if 'name' in req:
-                name = req['name']
-            else:
-                return 'Ошибка! имя пользователя отсутствует', 400
-            if 'surname' in req:
-                surname = req['surname']
-            else:
-                return 'Ошибка! фамилия пользователя отсутствует', 400
-            if 'age' in req:
-                age = req['age']
-            else:
-                return 'Ошибка! возраст пользователя отсутствует', 400
-        else: return 'Вы не ввели никаких данных', 404
+@app.route('/api/create/<string:name>', methods=['POST'])
+def PostMethodHandler(name):
+    req = request.get_json()
+    if req != None and name == 'user':
+        if ('id' and 'name' and 'surname' and 'age') in req:
+            id = req['id']
+            name = req['name']
+            surname = req['surname']
+            age = req['age']
+        else:
+            return 'Ошибка! Недостаточно данных для заполнения объекта пользователь', 500
 
         user = User(id, name, surname, age)
         users.append(user)
-        return 'Новый пользователь добавлен', 200
+        return  'Новый пользователь успешно добавлен', 200
 
-    return 'Неизвестная ошибка', 404
+    elif req != None and  name == 'music':
+        if ('name' and 'author' and 'raiting') in req:
+            name = req['name']
+            author = req['author']
+            raiting = req['raiting']
+        else:
+            return 'Ошибка! Недостаточно данных для заполнения объекта музыка'
+        music = Music(name, author, raiting)
+        musics.append(music)
+        return 'Новая музыкальная композиция успешно добавлена', 200
+
+    else: 
+        return 'Ошибка! Сервер не может обработать Ваш запрос', 500
+
 
     
 

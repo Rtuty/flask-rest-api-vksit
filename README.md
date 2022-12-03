@@ -1,15 +1,36 @@
-# flask-rest-api-vksit
-METHOD=GET
-Users
-http://127.0.0.1:3005/api/get/users
-![image](https://user-images.githubusercontent.com/45632342/205442938-8472d607-7420-42f2-b922-998694ef324c.png)
+### Метод POST:
+##### Тестирование запроса на добавление
+##### 1)Пользователя
+Входные данные вида JSON (JavaScript Object Notation):
+```json
+{
+    "id": "1",
+    "name": "Kirill",
+    "surname": "Kudryavcev",
+    "age": "19"
+}
+```
+![[Pasted image 20221203210544.png]]
 
-METHOD=GET
-Musics
-http://127.0.0.1:3005/api/get/musics
-![image](https://user-images.githubusercontent.com/45632342/205442941-d97af693-6886-4355-b882-5158ace63be2.png)
+##### 2) Музыкальной композиции
+Входные данные типа JSON:
+```json
+{
+    "name": "Walk",
+    "author": "Pantera",
+    "raiting": "100"
+}
+```
+![[Pasted image 20221203210801.png]]
 
-METHOD=POST
-Users
-http://127.0.0.1:3005/api/createuser
-![image](https://user-images.githubusercontent.com/45632342/205442945-6260a30a-3dbf-4107-8bc0-c40a193f32cf.png)
+
+### Метод GET:
+##### Тестирование запроса на получения списка объектов:
+##### 1) Пользователей
+
+![[Pasted image 20221203211316.png]]
+
+##### 2) Музыкальных композиций:
+
+![[Pasted image 20221203211643.png]]
+

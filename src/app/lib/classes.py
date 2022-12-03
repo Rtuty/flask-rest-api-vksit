@@ -14,9 +14,15 @@ class User(object):
         self.age = age
 
 
+# class Music(object):
+#     def __init__(self, title, album, group, bpm):
+#         self.title  = title
+#         self.album  = album
+#         self.group  = group
+#         self.bpm    = bpm
+
 class Music(object):
-    def __init__(self, title, album, group, bpm):
-        self.title  = title
-        self.album  = album
-        self.group  = group
-        self.bpm    = bpm
+    def __init__(self, name, author, raiting):
+        self.name  = name
+        self.author  = author
+        self.raiting  = raiting
