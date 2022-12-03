@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from lib.classes import User, Music
 
 
@@ -9,7 +9,6 @@ client = app.test_client()
 
 users = []
 musics = []
-
 
 
 @app.route('/api/create/<string:name>', methods=['POST'])
@@ -55,22 +54,10 @@ def GetQueryHandler(name):
         for ms in musics:
             music = ms.id + ", " +ms.name + ", " + ms.author + ", " + ms.raiting
         return music, 200
-    if name == None:
+    if name in (None or ''):
         return 'Ошбика! Укажите в URL имя объекта, который собираетесь получить', 404
     else:
         return 'Ошибка! Указан неверный путь в URL'
-
-    
-
-
-@app.route('/api/put/users/<int:user_list_id>', methods=['PUT'])
-def update_tutorial(user_list_id):
-    item = next((x for x in users if x['id'] == user_list_id), None)
-    params = request.json
-    if not item:
-        return {'message': 'Пользователя с данным ID не существует'}, 400
-    item.update(params)
-    return item
 
 
 
