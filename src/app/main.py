@@ -6,14 +6,24 @@ app = Flask(__name__)
 
 client = app.test_client()
 
-
 users = []
 musics = []
+
+@app.route('/', methods=['GET'])
+def MainPageGet():
+    return ('Method=POST   ' + 'http://127.0.0.1/api/create/*user or music*      - Добавить новый объект' + '<br>' +
+            'Method=GET    ' + 'http://127.0.0.1/api/get/*users or music*        - Получить список объектов' + '<br>' +
+            'Method=PUT    ' + 'http://127.0.0.1/api/put/*user or music*/*ID*    - Обновить значение по ID у объекта' + '<br>' + 
+            'Method=DELETE ' + 'http://127.0.0.1/api/delete/*user or music*/*ID* - Удалить объект по ID'
+            )
+
 
 
 @app.route('/api/create/<string:name>', methods=['POST'])
 def PostMethodHandler(name):
+
     req = request.get_json()
+    
     if req != None and name == 'user':
         if ('id' and 'name' and 'surname' and 'age') in req:
             id = req['id']
@@ -63,7 +73,9 @@ def GetQueryHandler(name):
 
 @app.route('/api/put/<string:name_list>/<int:put_id>', methods=['PUT'])
 def PutMethodHandler(name_list, put_id):
+    
     req = request.get_json()
+
     if name_list == None:
         return 'Ошибка! Укажите тип объекта для обновления'
     if put_id == None:
