@@ -10,20 +10,6 @@ client = app.test_client()
 users = []
 musics = []
 
-@app.route('/api/get/<string:name>', methods=['GET'])
-def GetQueryHandler(name):
-    if name == 'users':
-        for us in users:
-            user = us.id + ", " + us.name + ", " +us.surname + ", " + us.age
-        return user, 200
-    if name == 'musics':
-        for ms in musics:
-            music = ms.name + ", " + ms.author + ", " + ms.raiting
-        return music, 200
-    if name == None:
-        return 'Ошбика! Укажите в URL имя объекта, который собираетесь получить', 404
-    else:
-        return 'Ошибка! Указан неверный путь в URL'
 
 
 @app.route('/api/create/<string:name>', methods=['POST'])
@@ -43,19 +29,36 @@ def PostMethodHandler(name):
         return  'Новый пользователь успешно добавлен', 200
 
     elif req != None and  name == 'music':
-        if ('name' and 'author' and 'raiting') in req:
+        if ('id' and 'name' and 'author' and 'raiting') in req:
+            id = req['id']
             name = req['name']
             author = req['author']
             raiting = req['raiting']
         else:
             return 'Ошибка! Недостаточно данных для заполнения объекта музыка'
-        music = Music(name, author, raiting)
+        music = Music(id, name, author, raiting)
         musics.append(music)
         return 'Новая музыкальная композиция успешно добавлена', 200
 
     else: 
         return 'Ошибка! Сервер не может обработать Ваш запрос', 500
 
+
+
+@app.route('/api/get/<string:name>', methods=['GET'])
+def GetQueryHandler(name):
+    if name == 'users':
+        for us in users:
+            user = us.id + ", " + us.name + ", " +us.surname + ", " + us.age
+        return user, 200
+    if name == 'musics':
+        for ms in musics:
+            music = ms.id + ", " +ms.name + ", " + ms.author + ", " + ms.raiting
+        return music, 200
+    if name == None:
+        return 'Ошбика! Укажите в URL имя объекта, который собираетесь получить', 404
+    else:
+        return 'Ошибка! Указан неверный путь в URL'
 
     
 
@@ -68,6 +71,7 @@ def update_tutorial(user_list_id):
         return {'message': 'Пользователя с данным ID не существует'}, 400
     item.update(params)
     return item
+
 
 
 @app.route('/api/put/<string:name_list>/<int:put_id>', methods=['PUT'])
@@ -95,6 +99,8 @@ def PutMethodHandler(name_list, put_id):
 
         list = musics[put_id]
 
+        if 'id' in req:
+            list.id = req['id']
         if 'name' in req:
             list.name = req['name']
         if 'author' in req:
@@ -106,14 +112,15 @@ def PutMethodHandler(name_list, put_id):
 
 
 
-@app.route('/api/delete/<int:user_list_id>', methods=['DELETE'])
-def DeleteMethodHandler(user_list_id):
-    idx, _ = next((x for x in enumerate(users)
-                   if x[1]['id'] == user_list_id), (None, None))
-
-    users.pop(idx)
-    return '', 204
-
+@app.route('/api/delete/<string:name_list>/<int:delete_id>', methods=['DELETE'])
+def DeleteMethodHandler(name_list, delete_id):
+    if name_list == 'user':
+        users.pop(delete_id)
+        return 'Пользователь успешно удален', 200
+    if name_list == 'music':
+        musics.pop(delete_id)
+        return 'Композиция успешно удалена', 200
+    return 'Ошибка! ID объекта не найден, удаление не выполнено', 400
 
 
 

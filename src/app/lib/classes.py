@@ -6,7 +6,8 @@ class User(object):
         self.age = age
 
 class Music(object):
-    def __init__(self, name, author, raiting):
+    def __init__(self, id, name, author, raiting):
+        self.id = id
         self.name  = name
         self.author  = author
         self.raiting  = raiting
