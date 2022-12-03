@@ -4,10 +4,10 @@
 Входные данные вида JSON (JavaScript Object Notation):
 ```json
 {
-    "id": "1",
-    "name": "Kirill",
-    "surname": "Kudryavcev",
-    "age": "19"
+	"id": "1",
+	"name": "Kirill",
+	"surname": "Kudryavcev",
+	"age": "19"
 }
 ```
 
@@ -19,9 +19,9 @@
 ```json
 {	
 	"id": "1",
-    "name": "Walk",
-    "author": "Pantera",
-    "raiting": "100"
+	"name": "Walk",
+	"author": "Pantera",
+	"raiting": "100"
 }
 ```
 
