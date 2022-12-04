@@ -11,7 +11,8 @@ musics = []
 
 @app.route('/', methods=['GET'])
 def MainPageGet():
-    return ('Method=POST   ' + 'http://127.0.0.1/api/create/*user or music*      - Добавить новый объект' + '<br>' +
+    return (
+            'Method=POST   ' + 'http://127.0.0.1/api/create/*user or music*      - Добавить новый объект' + '<br>' +
             'Method=GET    ' + 'http://127.0.0.1/api/get/*users or music*        - Получить список объектов' + '<br>' +
             'Method=PUT    ' + 'http://127.0.0.1/api/put/*user or music*/*ID*    - Обновить значение по ID у объекта' + '<br>' + 
             'Method=DELETE ' + 'http://127.0.0.1/api/delete/*user or music*/*ID* - Удалить объект по ID'
@@ -26,27 +27,25 @@ def PostMethodHandler(name):
     
     if req != None and name == 'user':
         if ('id' and 'name' and 'surname' and 'age') in req:
-            id = req['id']
-            name = req['name']
+            id      = req['id']
+            name    = req['name']
             surname = req['surname']
-            age = req['age']
+            age     = req['age']
         else:
-            return 'Ошибка! Недостаточно данных для заполнения объекта пользователь', 404
+            return 'Ошибка! Недостаточно данных для заполнения объекта пользователь', 400
 
-        user = User(id, name, surname, age)
-        users.append(user)
+        users.append(User(id, name, surname, age))
         return  'Новый пользователь успешно добавлен', 200
 
     elif req != None and  name == 'music':
         if ('id' and 'name' and 'author' and 'raiting') in req:
-            id = req['id']
-            name = req['name']
-            author = req['author']
+            id      = req['id']
+            name    = req['name']
+            author  = req['author']
             raiting = req['raiting']
         else:
             return 'Ошибка! Недостаточно данных для заполнения объекта музыка'
-        music = Music(id, name, author, raiting)
-        musics.append(music)
+        musics.append(Music(id, name, author, raiting))
         return 'Новая музыкальная композиция успешно добавлена', 200
 
     else: 
@@ -76,7 +75,7 @@ def PutMethodHandler(name_list, put_id):
     
     req = request.get_json()
 
-    if name_list == None:
+    if name_list != ('user' or 'music') or name_list == None:
         return 'Ошибка! Укажите тип объекта для обновления'
     if put_id == None:
         return 'Ошибка! Укажите ID объекта для обновления'
